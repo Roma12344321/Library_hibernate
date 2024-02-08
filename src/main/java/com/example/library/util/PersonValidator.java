@@ -1,7 +1,7 @@
 package com.example.library.util;
 
-import com.example.library.dao.PersonDao;
 import com.example.library.models.Person;
+import com.example.library.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -10,11 +10,11 @@ import org.springframework.validation.Validator;
 @Component
 public class PersonValidator implements Validator {
 
-    private final PersonDao personDao;
+    private final PeopleService peopleService;
 
     @Autowired
-    public PersonValidator(PersonDao personDao) {
-        this.personDao = personDao;
+    public PersonValidator(PeopleService peopleService) {
+        this.peopleService = peopleService;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
-        if (personDao.show(person.getName()) != null)
+        if (peopleService.show(person.getName()) != null)
             errors.rejectValue("name", "", "This name is already taken");
     }
 }
